@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebByUs – Freelance Web Design & Development</title>
+  <meta name="description" content="We build websites that work for you. Professional web design, e-commerce, SEO, and maintenance services." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    * { cursor: none; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0f; color: #e2e8f0; }
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0a0f; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #7c3aed, #3b82f6); border-radius: 4px; }
+
+    .cursor-dot { width: 8px; height: 8px; background: #a78bfa; border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform 0.05s; }
+    .cursor-ring { width: 40px; height: 40px; border: 2px solid rgba(167,139,250,0.5); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transition: all 0.15s ease-out; }
+    .cursor-ring.hover { width: 60px; height: 60px; border-color: rgba(167,139,250,0.8); background: rgba(167,139,250,0.08); transform: translate(-10px,-10px); }
+
+    .hero-gradient { background: linear-gradient(135deg, #0a0a0f 0%, #1a0a2e 25%, #0f172a 50%, #1a0a2e 75%, #0a0a0f 100%); background-size: 400% 400%; animation: gradientShift 12s ease infinite; }
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+    .hero-glow { position: absolute; width: 600px; height: 600px; border-radius: 50%; filter: blur(120px); opacity: 0.15; pointer-events: none; }
+    .hero-glow-1 { background: #7c3aed; top: -200px; left: -200px; animation: floatGlow 8s ease-in-out infinite; }
+    .hero-glow-2 { background: #3b82f6; bottom: -200px; right: -200px; animation: floatGlow 10s ease-in-out infinite reverse; }
+    .hero-glow-3 { background: #8b5cf6; top: 50%; left: 50%; transform: translate(-50%,-50%); animation: floatGlow 12s ease-in-out infinite 2s; }
+    @keyframes floatGlow { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-30px) scale(1.1); } }
+
+    .glass { background: rgba(255,255,255,0.04); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.06); }
+    .glass-card { background: rgba(255,255,255,0.04); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.08); transition: all 0.4s cubic-bezier(0.4,0,0.2,1); }
+    .glass-card:hover { transform: translateY(-8px); border-color: rgba(167,139,250,0.3); box-shadow: 0 20px 60px rgba(124,58,237,0.15); background: rgba(255,255,255,0.07); }
+    .glass-card-highlight { background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.3); }
+    .glass-card-highlight:hover { background: rgba(124,58,237,0.12); border-color: rgba(124,58,237,0.5); box-shadow: 0 20px 60px rgba(124,58,237,0.25); }
+    .glass-nav { background: rgba(10,10,15,0.7); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+    .section-hidden { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.4,0,0.2,1); }
+    .section-visible { opacity: 1; transform: translateY(0); }
+
+    .service-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; transition: all 0.4s ease; }
+    .glass-card:hover .service-icon { transform: scale(1.1) rotate(-5deg); border-radius: 12px; }
+
+    .overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(124,58,237,0.85), rgba(59,130,246,0.85)); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.4s ease; border-radius: 1rem; }
+    .project-card:hover .overlay { opacity: 1; }
+
+    .testimonial-track { display: flex; transition: transform 0.5s cubic-bezier(0.4,0,0.2,1); }
+    .testimonial-slide { min-width: 100%; padding: 0 8px; }
+    @media (min-width: 768px) { .testimonial-slide { min-width: 50%; } }
+    @media (min-width: 1024px) { .testimonial-slide { min-width: 33.333%; } }
+
+    .pricing-glow { position: absolute; width: 200px; height: 200px; border-radius: 50%; filter: blur(80px); opacity: 0.1; pointer-events: none; top: -60px; right: -60px; background: #7c3aed; }
+
+    .hamburger-line { width: 24px; height: 2px; background: #e2e8f0; transition: all 0.3s ease; transform-origin: center; }
+    .hamburger-open .hamburger-line:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+    .hamburger-open .hamburger-line:nth-child(2) { opacity: 0; }
+    .hamburger-open .hamburger-line:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+    .mobile-menu { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease, padding 0.3s ease; opacity: 0; }
+    .mobile-menu.open { max-height: 500px; opacity: 1; }
+
+    .counter-value { display: inline-block; }
+
+    .btn-primary { background: linear-gradient(135deg, #7c3aed, #3b82f6); transition: all 0.3s ease; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.35); }
+    .btn-outline { border: 1px solid rgba(167,139,250,0.3); transition: all 0.3s ease; }
+    .btn-outline:hover { border-color: #7c3aed; background: rgba(124,58,237,0.1); transform: translateY(-2px); }
+
+    .nav-link { position: relative; transition: color 0.3s ease; }
+    .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, #7c3aed, #3b82f6); transition: width 0.3s ease; border-radius: 1px; }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link.active::after { width: 100%; }
+
+    input, textarea { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; }
+    input:focus, textarea:focus { outline: none; border-color: #7c3aed; box-shadow: 0 0 0 3px rgba(124,58,237,0.15); background: rgba(255,255,255,0.06); }
+    input.error, textarea.error { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.15); }
+    .success-check { stroke-dasharray: 50; stroke-dashoffset: 50; animation: drawCheck 0.5s ease forwards; }
+    @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+
+    .tag { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.2); }
+
+    .social-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.3s ease; }
+    .social-icon:hover { background: rgba(124,58,237,0.15); border-color: rgba(124,58,237,0.3); transform: translateY(-3px); }
+
+    .dot-active { background: #7c3aed !important; width: 28px !important; border-radius: 4px !important; }
+
+    @media (max-width: 767px) { .cursor-dot, .cursor-ring { display: none; } * { cursor: auto; } }
+  </style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Navbar -->
+<nav id="navbar" class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+      <a href="#hero" class="flex items-center gap-3 group">
+        <img src="business logo.jpeg" alt="WebByUs" class="h-9 w-9 rounded-lg object-cover ring-2 ring-purple-500/30 group-hover:ring-purple-500/60 transition-all" />
+        <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">WebByUs</span>
+      </a>
+      <div class="hidden lg:flex items-center gap-8">
+        <a href="#hero" class="nav-link text-sm font-medium text-gray-300 hover:text-white">Home</a>
+        <a href="#services" class="nav-link text-sm font-medium text-gray-300 hover:text-white">Services</a>
+        <a href="#why-us" class="nav-link text-sm font-medium text-gray-300 hover:text-white">Why Us</a>
+        <a href="#pricing" class="nav-link text-sm font-medium text-gray-300 hover:text-white">Pricing</a>
+        <a href="#contact" class="btn-primary text-sm font-semibold px-5 py-2.5 rounded-xl text-white">Enquire Us</a>
+      </div>
+      <button id="hamburger" class="lg:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="mobile-menu lg:hidden px-4">
+    <div class="flex flex-col gap-1 pb-5 pt-1">
+      <a href="#hero" class="mobile-link px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Home</a>
+      <a href="#services" class="mobile-link px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Services</a>
+      <a href="#why-us" class="mobile-link px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Why Us</a>
+      <a href="#pricing" class="mobile-link px-4 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-all">Pricing</a>
+      <a href="#contact" class="btn-primary text-sm font-semibold px-5 py-3 rounded-xl text-white text-center mt-2">Enquire Us</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section id="hero" class="hero-gradient min-h-screen flex items-center relative overflow-hidden pt-16 lg:pt-20">
+  <div class="hero-glow hero-glow-1"></div>
+  <div class="hero-glow hero-glow-2"></div>
+  <div class="hero-glow hero-glow-3"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 relative z-10">
+    <div class="max-w-4xl mx-auto text-center">
+      <div class="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-6 md:mb-8 section-hidden">
+        <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+        <span class="text-xs md:text-sm font-medium text-gray-300">Available for new projects</span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-6 section-hidden">
+        <span class="bg-gradient-to-r from-purple-400 via-violet-400 to-blue-400 bg-clip-text text-transparent">We Build</span>
+        <br />
+        <span class="text-white">You Grow !</span>
+      </h1>
+      <p class="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed section-hidden">
+        From concept to launch, we craft stunning, high-performance websites that drive real results for your business.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 section-hidden">
+        <a href="#contact" class="btn-primary text-sm sm:text-base font-semibold px-8 py-3.5 rounded-xl text-white w-full sm:w-auto text-center">Start Your Project</a>
+      </div>
+      <div class="mt-12 md:mt-16 flex items-center justify-center gap-6 md:gap-10 text-sm text-gray-500 section-hidden">
+        <div class="flex items-center gap-2"><span class="text-purple-400">&#10003;</span> No Contract</div>
+        <div class="flex items-center gap-2"><span class="text-purple-400">&#10003;</span> Fast Turnaround</div>
+        <div class="flex items-center gap-2"><span class="text-purple-400">&#10003;</span> 100% Custom</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="py-20 md:py-28 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14 md:mb-18 section-hidden">
+      <span class="text-purple-400 text-sm font-semibold tracking-widest uppercase">What We Do</span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-3">Our Services</h2>
+      <p class="text-gray-400 mt-4 max-w-xl mx-auto">Everything you need to establish and grow your online presence.</p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+      <div class="glass-card rounded-2xl p-6 md:p-8 section-hidden">
+        <div class="service-icon bg-purple-500/10 text-purple-400 mb-5">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Website Design</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Beautiful, responsive designs tailored to your brand and built for conversion.</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6 md:p-8 section-hidden">
+        <div class="service-icon bg-blue-500/10 text-blue-400 mb-5">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">E-commerce</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Full-featured online stores with secure payments and seamless checkout.</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6 md:p-8 section-hidden">
+        <div class="service-icon bg-emerald-500/10 text-emerald-400 mb-5">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">SEO Optimization</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Climb rankings and get found by the right audience with proven SEO strategies.</p>
+      </div>
+      <div class="glass-card rounded-2xl p-6 md:p-8 section-hidden">
+        <div class="service-icon bg-amber-500/10 text-amber-400 mb-5">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        </div>
+        <h3 class="text-lg font-bold text-white mb-2">Maintenance</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Ongoing updates, security patches, and performance monitoring for peace of mind.</p>
+      </div>
+    </div>
+  </div>
+
+
+<!-- Why Choose Us / Stats -->
+<section id="why-us" class="py-20 md:py-28 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14 md:mb-18 section-hidden">
+      <span class="text-purple-400 text-sm font-semibold tracking-widest uppercase">Why Choose Us</span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-3">Built Different</h2>
+      <p class="text-gray-400 mt-4 max-w-xl mx-auto">Affordable, reliable, and built for your growth.!</p>
+    </div>
+  
+    <div class="grid md:grid-cols-3 gap-5 md:gap-6">
+      <div class="glass-card rounded-2xl p-6 md:p-8 section-hidden flex gap-4 items-start">
+        <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center shrink-0 text-purple-400">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+        </div>
+        <div>
+          <h4 class="font-bold text-white">Pixel-Perfect Design</h4>
+          <p class="text-gray-400 text-sm mt-1">Every detail matters. We craft interfaces that look stunning on every device.</p>
+        </div>
+      </div>
+      <div class="glass-card rounded-2xl p-6 md:p-8 section-hidden flex gap-4 items-start">
+        <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center shrink-0 text-blue-400">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"/></svg>
+        </div>
+        <div>
+          <h4 class="font-bold text-white">Lightning Fast</h4>
+          <p class="text-gray-400 text-sm mt-1">Optimized for speed. Fast load times mean better conversions and SEO.</p>
+        </div>
+      </div>
+      <div class="glass-card rounded-2xl p-6 md:p-8 section-hidden flex gap-4 items-start">
+        <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0 text-emerald-400">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+        </div>
+        <div>
+          <h4 class="font-bold text-white">Reliable Support</h4>
+          <p class="text-gray-400 text-sm mt-1">We're with you every step of the way. Ongoing support whenever you need it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Pricing -->
+<section id="pricing" class="py-20 md:py-28 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14 md:mb-18 section-hidden">
+      <span class="text-purple-400 text-sm font-semibold tracking-widest uppercase">Pricing</span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-3">Simple, Transparent Pricing</h2>
+      <p class="text-gray-400 mt-4 max-w-xl mx-auto">No hidden fees. No surprises. Pick the plan that fits your needs.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-5 md:gap-6 max-w-5xl mx-auto items-start">
+      <div class="glass-card rounded-2xl p-6 md:p-8 section-hidden relative">
+        <h3 class="text-lg font-bold text-white">Basic</h3>
+        <p class="text-gray-400 text-sm mt-1">Perfect for startups</p>
+        <div class="mt-6 mb-6">
+          <span class="text-4xl font-extrabold text-white">&#8377;3,999</span>
+          <span class="text-gray-500 text-sm">/project</span>
+        </div>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Free Domain Name</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Free Hosting</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Dynamic Website Design</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> 100% Responsive Website</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> SEO Friendly Website</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> WhatsApp Call Integration</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Social Media Integration</li>
+        </ul>
+        <a href="#contact" class="btn-outline text-sm font-semibold px-6 py-3 rounded-xl text-gray-300 w-full block text-center">Get Started</a>
+      </div>
+      <div class="glass-card glass-card-highlight rounded-2xl p-6 md:p-8 section-hidden relative scale-105 md:scale-110 z-10">
+        <div class="pricing-glow"></div>
+        <div class="inline-flex items-center gap-1 bg-purple-500/20 text-purple-300 text-xs font-semibold px-3 py-1 rounded-full mb-3 border border-purple-500/30">Most Popular</div>
+        <h3 class="text-lg font-bold text-white">Standard</h3>
+        <p class="text-gray-400 text-sm mt-1">Best for growing businesses</p>
+        <div class="mt-6 mb-6">
+          <span class="text-4xl font-extrabold text-white">&#8377;7,999</span>
+          <span class="text-gray-500 text-sm">/project</span>
+        </div>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Free Domain Name</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Free Hosting</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Dynamic Website Design 6-8 Pages</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Business Email ID</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> 100% Responsive Website</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> SEO Friendly Website</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> WhatsApp Call Integration</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Social Media Integration</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Admin Panel Access</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Payment Gateway Integration</li>
+        </ul>
+        <a href="#contact" class="btn-primary text-sm font-semibold px-6 py-3 rounded-xl text-white w-full block text-center">Get Started</a>
+      </div>
+      <div class="glass-card rounded-2xl p-6 md:p-8 section-hidden relative">
+        <h3 class="text-lg font-bold text-white">Premium</h3>
+        <p class="text-gray-400 text-sm mt-1">For serious businesses</p>
+        <div class="mt-6 mb-6">
+          <span class="text-4xl font-extrabold text-white">&#8377;15,999</span>
+          <span class="text-gray-500 text-sm">/project</span>
+        </div>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Free Domain Name</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Free Hosting</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Dynamic Website Design 12-16 Pages</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Business Email ID</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> 100% Responsive Website</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> SEO Friendly Website</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> WhatsApp Call Integration</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Social Media Integration</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Admin Panel Access</li>
+          <li class="flex items-center gap-2 text-sm text-gray-300"><span class="text-purple-400 shrink-0">&#10003;</span> Payment Gateway Integration</li>
+        </ul>
+        <a href="#contact" class="btn-outline text-sm font-semibold px-6 py-3 rounded-xl text-gray-300 w-full block text-center">Get Started</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact -->
+<section id="contact" class="py-20 md:py-28 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-14 md:mb-18 section-hidden">
+      <span class="text-purple-400 text-sm font-semibold tracking-widest uppercase">Contact</span>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mt-3">Let's Build Something Great</h2>
+      <p class="text-gray-400 mt-4 max-w-xl mx-auto">Ready to start your project? Reach out and we'll get back to you within 24 hours.</p>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
+      <div class="section-hidden">
+        <form id="contactForm" action="https://formsubmit.co/webbyus4u@gmail.com" method="POST" novalidate class="space-y-5">
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_subject" value="New inquiry from WebByUs website" />
+          <div>
+            <label for="name" class="block text-sm font-medium text-gray-300 mb-1.5">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="John Doe" class="w-full rounded-xl px-4 py-3 text-white placeholder-gray-500" required />
+            <p class="text-red-400 text-xs mt-1 hidden" id="nameError">Please enter your name.</p>
+          </div>
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-300 mb-1.5">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="john@example.com" class="w-full rounded-xl px-4 py-3 text-white placeholder-gray-500" required />
+            <p class="text-red-400 text-xs mt-1 hidden" id="emailError">Please enter a valid email.</p>
+          </div>
+          <div>
+            <label for="message" class="block text-sm font-medium text-gray-300 mb-1.5">Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Tell us about your project..." class="w-full rounded-xl px-4 py-3 text-white placeholder-gray-500 resize-none" required></textarea>
+            <p class="text-red-400 text-xs mt-1 hidden" id="messageError">Please enter your message.</p>
+          </div>
+          <button type="submit" id="submitBtn" class="btn-primary text-sm font-semibold px-8 py-3.5 rounded-xl text-white w-full">
+            <span id="submitText">Send Message</span>
+            <span id="submitSpinner" class="hidden">Sending...</span>
+          </button>
+          <p id="formSuccess" class="text-emerald-400 text-sm text-center hidden flex items-center justify-center gap-2">
+            <svg class="w-5 h-5 success-check" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            Message sent! We'll be in touch soon.
+          </p>
+        </form>
+      </div>
+      <div class="section-hidden flex flex-col justify-between">
+        <div>
+          <h3 class="text-xl font-bold text-white mb-4">Get In Touch</h3>
+          <p class="text-gray-400 text-sm leading-relaxed mb-6">Have a project in mind or just want to say hello? We'd love to hear from you. Reach out through any of the channels below.</p>
+          <div class="space-y-4">
+            <div class="flex items-center gap-3 text-sm text-gray-300">
+              <div class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/></svg>
+              </div>
+              <span>webbyus4u@gmail.com</span>
+            </div>
+            <div class="flex items-center gap-3 text-sm text-gray-300">
+              <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/></svg>
+              </div>
+              <span>TamilNadu, India</span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 lg:mt-0">
+          <h4 class="text-sm font-semibold text-gray-300 mb-4">Follow Us</h4>
+          <div class="flex gap-3">
+            <a href="https://wa.me/qr/73YCZQDRIJMWB1" target="_blank" rel="noopener" class="social-icon text-gray-400 hover:text-green-400" aria-label="WhatsApp">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/web.by.us?igsh=cjd2Y2hwaXA3cmRi" target="_blank" rel="noopener" class="social-icon text-gray-400 hover:text-pink-400" aria-label="Instagram">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://www.facebook.com/share/1B6nxAVssN/" target="_blank" rel="noopener" class="social-icon text-gray-400 hover:text-blue-400" aria-label="Facebook">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="border-t border-white/5 py-10 md:py-14">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+      <div>
+        <div class="flex items-center gap-2.5 mb-4">
+          <img src="business logo.jpeg" alt="WebByUs" class="h-8 w-8 rounded-lg object-cover" />
+          <span class="text-lg font-bold bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">WebByUs</span>
+        </div>
+        <p class="text-gray-500 text-sm leading-relaxed">Building modern websites that drive real results for businesses of all sizes.</p>
+      </div>
+      <div>
+        <h4 class="text-sm font-semibold text-white mb-4">Services</h4>
+        <ul class="space-y-2.5">
+          <li><a href="#services" class="text-gray-500 text-sm hover:text-purple-400 transition-colors">Website Design</a></li>
+          <li><a href="#services" class="text-gray-500 text-sm hover:text-purple-400 transition-colors">E-commerce</a></li>
+          <li><a href="#services" class="text-gray-500 text-sm hover:text-purple-400 transition-colors">SEO Optimization</a></li>
+          <li><a href="#services" class="text-gray-500 text-sm hover:text-purple-400 transition-colors">Maintenance</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-sm font-semibold text-white mb-4">Company</h4>
+        <ul class="space-y-2.5">
+          <li><a href="#pricing" class="text-gray-500 text-sm hover:text-purple-400 transition-colors">Pricing</a></li>
+          <li><a href="#contact" class="text-gray-500 text-sm hover:text-purple-400 transition-colors">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-sm font-semibold text-white mb-4">Support</h4>
+        <ul class="space-y-2.5">
+          <li><a href="#" class="text-gray-500 text-sm hover:text-purple-400 transition-colors">FAQ</a></li>
+          <li><a href="#" class="text-gray-500 text-sm hover:text-purple-400 transition-colors">Privacy Policy</a></li>
+          <li><a href="#" class="text-gray-500 text-sm hover:text-purple-400 transition-colors">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 border-t border-white/5">
+      <p class="text-gray-600 text-xs sm:text-sm">&copy; 2026 WebByUs. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="#" class="text-gray-600 hover:text-purple-400 transition-colors text-xs sm:text-sm">Privacy Policy</a>
+        <a href="#" class="text-gray-600 hover:text-purple-400 transition-colors text-xs sm:text-sm">Terms</a>
+        <a href="#" class="text-gray-600 hover:text-purple-400 transition-colors text-xs sm:text-sm">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  'use strict';
+
+  // --- Custom Cursor ---
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  if (dot && ring) {
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+    document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; dot.style.transform = `translate(${mouseX-4}px,${mouseY-4}px)`; });
+    function animateRing() { ringX += (mouseX - ringX) * 0.15; ringY += (mouseY - ringY) * 0.15; ring.style.transform = `translate(${ringX-20}px,${ringY-20}px)`; requestAnimationFrame(animateRing); }
+    animateRing();
+    document.querySelectorAll('a, button, input, textarea, .glass-card, .project-card').forEach(el => { el.addEventListener('mouseenter', () => ring.classList.add('hover')); el.addEventListener('mouseleave', () => ring.classList.remove('hover')); });
+  }
+
+  // --- Navbar scroll ---
+  const navbar = document.getElementById('navbar');
+  let lastScroll = 0;
+  window.addEventListener('scroll', () => {
+    const cur = window.scrollY;
+    if (cur > 80) { navbar.style.background = 'rgba(10,10,15,0.85)'; } else { navbar.style.background = ''; }
+    lastScroll = cur;
+  });
+
+  // --- Mobile Menu ---
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('hamburger-open');
+    mobileMenu.classList.toggle('open');
+  });
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('hamburger-open');
+      mobileMenu.classList.remove('open');
+    });
+  });
+
+  // --- Active Nav Link ---
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+      const top = sec.offsetTop - 150;
+      if (window.scrollY >= top) current = sec.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+    });
+  });
+
+  // --- Intersection Observer Animations ---
+  const hiddenEls = document.querySelectorAll('.section-hidden');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('section-visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+  hiddenEls.forEach(el => observer.observe(el));
+  // Trigger hero animations on load with stagger
+  const heroEls = document.querySelectorAll('#hero .section-hidden');
+  setTimeout(() => { heroEls.forEach((el, i) => { setTimeout(() => el.classList.add('section-visible'), i * 150); }); }, 200);
+
+  // --- Counter Animation ---
+  const counters = document.querySelectorAll('.counter-value');
+  let countersAnimated = false;
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !countersAnimated) {
+        countersAnimated = true;
+        counters.forEach(counter => {
+          const target = parseInt(counter.getAttribute('data-target'));
+          const duration = 2000;
+          const step = Math.max(1, Math.floor(target / 60));
+          let current = 0;
+          const timer = setInterval(() => {
+            current += step;
+            if (current >= target) { counter.textContent = target; clearInterval(timer); return; }
+            counter.textContent = current;
+          }, duration / 60);
+        });
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  const statsSection = document.querySelector('#why-us .counter-value');
+  if (statsSection) counterObserver.observe(statsSection.closest('.grid'));
+
+  // --- Testimonial Carousel ---
+  const track = document.getElementById('testimonialTrack');
+  const prevBtn = document.getElementById('testimonialPrev');
+  const nextBtn = document.getElementById('testimonialNext');
+  const dotsContainer = document.getElementById('testimonialDots');
+  if (track) {
+    const slides = track.querySelectorAll('.testimonial-slide');
+    let slidesPerView = getSlidesPerView();
+    let totalSlides = slides.length;
+    let currentIndex = 0;
+
+    function getSlidesPerView() {
+      if (window.innerWidth >= 1024) return 3;
+      if (window.innerWidth >= 768) return 2;
+      return 1;
+    }
+
+    function updateDots() {
+      dotsContainer.innerHTML = '';
+      const count = Math.max(1, totalSlides - slidesPerView + 1);
+      for (let i = 0; i < count; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-gray-600 transition-all duration-300';
+        if (i === currentIndex) dot.classList.add('dot-active');
+        dot.addEventListener('click', () => { currentIndex = i; updateSlider(); });
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    function updateSlider() {
+      const maxIndex = Math.max(0, totalSlides - slidesPerView);
+      if (currentIndex > maxIndex) currentIndex = maxIndex;
+      if (currentIndex < 0) currentIndex = 0;
+      const offset = -(currentIndex * (100 / slidesPerView));
+      track.style.transform = `translateX(${offset}%)`;
+      document.querySelectorAll('#testimonialDots button').forEach((d, i) => {
+        d.classList.toggle('dot-active', i === currentIndex);
+      });
+    }
+
+    prevBtn.addEventListener('click', () => { currentIndex--; updateSlider(); });
+    nextBtn.addEventListener('click', () => { currentIndex++; updateSlider(); });
+
+    window.addEventListener('resize', () => {
+      slidesPerView = getSlidesPerView();
+      updateSlider();
+      updateDots();
+    });
+
+    updateDots();
+    updateSlider();
+
+    // Auto-play
+    let autoPlay = setInterval(() => { currentIndex++; updateSlider(); }, 5000);
+    const container = document.getElementById('testimonialContainer');
+    container.addEventListener('mouseenter', () => clearInterval(autoPlay));
+    container.addEventListener('mouseleave', () => { autoPlay = setInterval(() => { currentIndex++; updateSlider(); }, 5000); });
+  }
+
+  // --- Form Validation ---
+  const form = document.getElementById('contactForm');
+  if (form) {
+    const name = document.getElementById('name');
+    const email = document.getElementById('email');
+    const message = document.getElementById('message');
+    const nameErr = document.getElementById('nameError');
+    const emailErr = document.getElementById('emailError');
+    const msgErr = document.getElementById('messageError');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const submitSpinner = document.getElementById('submitSpinner');
+    const formSuccess = document.getElementById('formSuccess');
+
+    function validateField(input, errorEl, validator) {
+      const result = validator(input.value);
+      if (!result.valid) {
+        input.classList.add('error');
+        errorEl.classList.remove('hidden');
+        errorEl.textContent = result.msg;
+      } else {
+        input.classList.remove('error');
+        errorEl.classList.add('hidden');
+      }
+      return result.valid;
+    }
+
+    function validateAll() {
+      const nameValid = validateField(name, nameErr, (v) => ({ valid: v.trim().length > 0, msg: 'Please enter your name.' }));
+      const emailValid = validateField(email, emailErr, (v) => ({ valid: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()), msg: 'Please enter a valid email.' }));
+      const msgValid = validateField(message, msgErr, (v) => ({ valid: v.trim().length > 0, msg: 'Please enter your message.' }));
+      return nameValid && emailValid && msgValid;
+    }
+
+    name.addEventListener('blur', () => validateField(name, nameErr, (v) => ({ valid: v.trim().length > 0, msg: 'Please enter your name.' })));
+    email.addEventListener('blur', () => validateField(email, emailErr, (v) => ({ valid: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()), msg: 'Please enter a valid email.' })));
+    message.addEventListener('blur', () => validateField(message, msgErr, (v) => ({ valid: v.trim().length > 0, msg: 'Please enter your message.' })));
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!validateAll()) return;
+      submitText.classList.add('hidden');
+      submitSpinner.classList.remove('hidden');
+      submitBtn.disabled = true;
+      submitBtn.classList.add('opacity-70');
+      const formData = new FormData(form);
+      fetch(form.action, { method: 'POST', body: formData })
+        .then(res => {
+          submitText.classList.remove('hidden');
+          submitSpinner.classList.add('hidden');
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-70');
+          if (res.ok) {
+            form.reset();
+            [name, email, message].forEach(i => i.classList.remove('error'));
+            [nameErr, emailErr, msgErr].forEach(e => e.classList.add('hidden'));
+            formSuccess.classList.remove('hidden');
+            setTimeout(() => formSuccess.classList.add('hidden'), 5000);
+          }
+        })
+        .catch(() => {
+          submitText.classList.remove('hidden');
+          submitSpinner.classList.add('hidden');
+          submitBtn.disabled = false;
+          submitBtn.classList.remove('opacity-70');
+          alert('Something went wrong. Please try again or email us directly at webbyus4u@gmail.com');
+        });
+    });
+  }
+})();
+</script>
+</body>
+</html>
